@@ -1,4 +1,5 @@
 --[[ Copyright (c) 2015-2018, Dr. Charles Mallah; Team-Jungle ]]
+-- Released with MIT License
 
 
 ---------------------------------------|
