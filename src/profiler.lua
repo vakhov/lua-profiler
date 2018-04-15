@@ -47,9 +47,6 @@ local table                            = table
 local TABL_REPORT_CACHE                = {}
 local TABL_REPORTS                     = {}
 local reportCount                      = 0
-local memoryUsage                      = ""
-local graphicsMemoryUsage              = ""
-local systemInformation                = nil
 local startTime                        = 0
 local stopTime                         = 0
 
@@ -242,9 +239,5 @@ function profilerReport(filename)
     end
     
 	end
-  
-  --
-  memoryUsage                      = ""
-  graphicsMemoryUsage              = ""
   
 end
