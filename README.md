@@ -93,4 +93,4 @@ output is gone.
 Please configure the profiler output in top of the code, particularly the 
 location of the profiler source file (if not in the 'main' root source directory).
 
-The output should be much easier to configure to you liking.
+The output should be much easier to configure to your liking.
