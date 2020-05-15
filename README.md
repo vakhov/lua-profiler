@@ -1,4 +1,4 @@
-# love-profiler
+# lua-profiler
 
 Code performance profiling for Lua.
 
