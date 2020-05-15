@@ -60,13 +60,13 @@ output is gone.
   
   ```
   -- Set-up:
-  require("profiler") -- Run this once per program only
+  local profiler = require("profiler") -- Run this once per program only
   
   -- Profiling:
-  profilerStart()
+  profiler.start()
   ... -- Code to profile, code block and/or called functions
-  profilerStop()
-  profilerReport("profiler.log")
+  profiler.stop()
+  profiler.report("profiler.log") -- Optionally give a file name here for this report
   ```
 
   
@@ -74,17 +74,17 @@ output is gone.
 
   ```
   -- Set-up:
-  require("profiler")
+  local profiler = require("profiler")
   function exampleConsolePrint()
     ... -- A custom function in your code-base to print to another file or a console stack  
   end
-  attachPrintFunction(exampleConsolePrint, true) -- Function and verbose output
+  profiler.attachPrintFunction(exampleConsolePrint, true) -- Function and verbose output
   
   -- Profiling:
-  profilerStart()
+  profiler.start()
   ... -- Code to profile, code block and/or called functions
-  profilerStop()
-  profilerReport("profiler.log") -- exampleConsolePrint can be called from this
+  profiler.stop()
+  profiler.report("profiler.log") -- exampleConsolePrint will now be called from this
   ```
   
   
