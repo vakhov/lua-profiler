@@ -5,14 +5,14 @@ Code performance profiling for Lua.
 Original concept from: 
   ProFi v1.3, by Luke Perkin 2012
 
-The initial reason for this project was to remove any misinterpretations of
-code profiling caused by the lengthy measurement time of the ProFi profiler;
-and to remove the self-profiler functions from the output report.
+The initial reason for this project was to reduce  misinterpretations of
+code profiling caused by the lengthy measurement time of the 'ProFi' profiler;
+and then to remove the self-profiler functions from the output report.
 
 I would like note that the profiler code has been substantially rewritten 
 to remove dependence to the OO class definition, and repetitions in code; 
 thus this profiler has a smaller code footprint and substantially reduced 
-execution time in the range of hundreds of percent up to 900% faster.
+execution time up to 900% faster.
 
 The second purpose was to allow slight customisation of the output report, 
 which I have parametrised the output report and rewritten.
@@ -20,7 +20,10 @@ which I have parametrised the output report and rewritten.
 Caveats: I didn't include an 'inspection' function that ProFi had, also the RAM
 output is gone.
 
-## Example output:
+Please configure the profiler output in top of the code, particularly the 
+location of the profiler source file (if not in the 'main' root source directory).
+
+## Sample output:
 
   ```
   > TOTAL TIME   = 0.003000 s
@@ -54,7 +57,7 @@ output is gone.
   count, respectively.
   
 
-## Usage examples:
+## Examples of usage:
 
 ### Print a profile report of a code block;
   
@@ -69,7 +72,6 @@ output is gone.
   profiler.report("profiler.log") -- Optionally give a file name here for this report
   ```
 
-  
 ### Profile a code block and allow mirror print to a custom print function;
 
   ```
@@ -86,11 +88,3 @@ output is gone.
   profiler.stop()
   profiler.report("profiler.log") -- exampleConsolePrint will now be called from this
   ```
-  
-  
-### Close:
-
-Please configure the profiler output in top of the code, particularly the 
-location of the profiler source file (if not in the 'main' root source directory).
-
-The output should be much easier to configure to your liking.
