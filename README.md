@@ -1,4 +1,4 @@
-# profiler.lua
+# lua-profiler
 
 ## Vignette
 
@@ -58,7 +58,6 @@ Output will be generated like this, all output here is ordered by time:
     | monkey_box/helper    : tableLength           :  682  : ~      : ~     :   1 |
     | monkey_box/engine    : AudioVolume           : 2164  : ~      : ~     :   1 |
     | main                 : debugProfileUpdate    : 1378  : ~      : ~     :   1 |
-    | monkey_box/profiler  : profilerStop          :  341  : ~      : ~     :   1 |
     | game/game            : accessTABL_USER       : 1063  : ~      : ~     :   1 |
     -------------------------------------------------------------------------------
 
