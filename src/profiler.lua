@@ -1,5 +1,6 @@
 --[[
 @title lua-profiler
+@version 1.0
 @description Code profiling for Lua based code;
 The output is a report file (text) and optionally to a console or other logger.
 
