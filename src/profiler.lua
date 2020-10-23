@@ -1,8 +1,33 @@
---[[Copyright (c) 2018-2020, Charles Mallah]]
--- Released with MIT License
+--[[
+@title lua-profiler
+@description Code profiling for Lua based code;
+The output is a report file (text) and optionally to a console or other logger
 
----------------------------------------|
---- Configuration
+@authors Charles Mallah
+@copyright (c) 2018-2020 Charles Mallah
+@license MIT license
+
+@example Print a profile report of a code block
+`local profiler = require("profiler")
+`profiler.start()
+`-- Code block and/or called functions to profile --
+`profiler.stop()
+`profiler.report("profiler.log")
+
+@example Profile a code block and allow mirror print to a custom print function
+`local profiler = require("profiler")
+`function exampleConsolePrint()
+`  -- Custom function in your code-base to print to file or console --
+`end
+`profiler.attachPrintFunction(exampleConsolePrint, true)
+`profiler.start()
+`-- Code block and/or called functions to profile --
+`profiler.stop()
+`profiler.report("profiler.log") -- exampleConsolePrint will now be called from this
+
+]]
+
+--[[ Configuration ]]--
 
 -- Location and name of profiler (to remove itself from reports);
 -- e.g. if this is in a 'tool' folder, rename this as: "tool/profiler.lua"
@@ -27,8 +52,7 @@ local formatFunTime = "%04.4f"
 local formatFunRelative = "%03.1f"
 local formatFunCount = "%"..(cW - 1).."i"
 
----------------------------------------|
---- Locals
+--[[ Locals ]]--
 
 local module = {}
 local getTime = os.clock
@@ -104,8 +128,7 @@ end
 
 local divider = charRepetition(#formatHeader - 1, "-").."\n"
 
----------------------------------------|
---- Functions
+--[[ Functions ]]--
 
 --[[Attach a print function to the profiler, to receive a single string parameter
 @param fn (function) <required>
@@ -116,7 +139,8 @@ function module.attachPrintFunction(fn, verbose)
   verbosePrint = verbose or false
 end
 
---[[Start the profiling]]
+--[[Start the profiling
+]]
 function module.start()
   TABL_REPORT_CACHE = {}
   TABL_REPORTS = {}
@@ -126,14 +150,15 @@ function module.start()
   debug.sethook(onDebugHook, "cr", 0)
 end
 
---[[Stop profiling]]
+--[[Stop profiling
+]]
 function module.stop()
   stopTime = getTime()
   debug.sethook()
 end
 
---[[Writes the profile report to file (will stop profling if not stopped already)
-@param filename (string) <default: "profiler.log">
+--[[Writes the profile report to file (will stop profiling if not stopped already)
+@param filename (string) <default: "profiler.log"> [File will be created and overwritten]
 ]]
 function module.report(filename)
   if stopTime == nil then
@@ -195,5 +220,5 @@ function module.report(filename)
   end
 end
 
---- End --
+--[[ End ]]--
 return module
