@@ -108,3 +108,7 @@ Profile a code block and allow mirror print to a custom print function
 
 > Writes the profile report to file (will stop profiling if not stopped already)  
 > &rarr; **filename** (string) <*default: "profiler.log"*> `File will be created and overwritten`  
+
+# Project
+
++ [Back to root](readme.md)
