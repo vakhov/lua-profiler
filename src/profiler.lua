@@ -291,8 +291,9 @@ function module.report(filename)
 end
 
 --[[Modify the configuration of this module programmatically;
-Provide a table with keys that share the same name as the configuration parameters.
+Provide a table with keys that share the same name as the configuration parameters:
 @param overrides (table) <required> [Each key is from a valid name, the value is the override]
+@unpack config
 ]]
 function module.configuration(overrides)
   local safe = deepCopy(overrides)

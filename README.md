@@ -101,29 +101,36 @@ new table using the matched key names:
 
 # API
 
-**attachPrintFunction** (fn, verbose\*) :   
+**attachPrintFunction** (fn, verbose\*)  
 
 > Attach a print function to the profiler, to receive a single string parameter  
 > &rarr; **fn** (function) <*required*>  
 > &rarr; **verbose** (boolean) <*default: false*>  
 
-**start** () :   
-
+**start**
 > Start the profiling  
 
-**stop** () :   
-
+**stop**
 > Stop profiling  
 
-**report** (filename\*) :   
+**report** (filename\*)  
 
 > Writes the profile report to file (will stop profiling if not stopped already)  
 > &rarr; **filename** (string) <*default: "profiler.log"*> `File will be created and overwritten`  
 
-**configuration** (overrides) :   
+**configuration** (overrides)  
 
 > Modify the configuration of this module programmatically;  
 > &rarr; **overrides** (table) <*required*> `Each key is from a valid name, the value is the override`  
+> - outputFile = "profiler.lua" `Name of this profiler (to remove itself from reports)`  
+> - emptyToThis = "~" `Rows with no time are set to this value`  
+> - fW = 20 `Width of the file column`  
+> - fnW = 28 `Width of the function name column`  
+> - lW = 7 `Width of the line column`  
+> - tW = 7 `Width of the time taken column`  
+> - rW = 6 `Width of the relative percentage column`  
+> - cW = 5 `Width of the call count column`  
+> - reportSaved = "> Report saved to: " `Text for the file output confirmation`  
 
 # Project
 
