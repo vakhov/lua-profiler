@@ -88,6 +88,17 @@ Profile a code block and allow mirror print to a custom print function
     profiler.report("profiler.log") -- exampleConsolePrint will now be called from this
 
 
+**Example**:
+Override a configuration parameter programmatically; insert your override values into a
+new table using the matched key names:
+
+    local overrides = {
+                        fW = 100, -- Change the file column to 100 characters (from 20)
+                        fnW = 120, -- Change the function column to 120 characters (from 28)
+                      }
+    profiler.configuration(overrides)
+
+
 # API
 
 **attachPrintFunction** (fn, verbose\*) :   
@@ -108,3 +119,12 @@ Profile a code block and allow mirror print to a custom print function
 
 > Writes the profile report to file (will stop profiling if not stopped already)  
 > &rarr; **filename** (string) <*default: "profiler.log"*> `File will be created and overwritten`  
+
+**configuration** (overrides) :   
+
+> Modify the configuration of this module programmatically;  
+> &rarr; **overrides** (table) <*required*> `Each key is from a valid name, the value is the override`  
+
+# Project
+
++ [Back to root](README.md)

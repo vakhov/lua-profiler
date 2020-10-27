@@ -67,32 +67,29 @@ this up as "~". Table headers % and # refer to percentage total time, and functi
 `profiler.stop()
 `profiler.report("profiler.log") -- exampleConsolePrint will now be called from this
 
+@example Override a configuration parameter programmatically; insert your override values into a
+new table using the matched key names:
+
+`local overrides = {
+`                    fW = 100, -- Change the file column to 100 characters (from 20)
+`                    fnW = 120, -- Change the function column to 120 characters (from 28)
+`                  }
+`profiler.configuration(overrides)
 ]]
 
 --[[ Configuration ]]--
 
--- Location and name of profiler (to remove itself from reports);
--- e.g. if this is in a 'tool' folder, rename this as: "tool/profiler.lua"
-local outputFile = "profiler.lua"
-local nilTime = "0.0000" -- Detect empty time, replace with tag below
-local emptyToThis = "~"
-local fW = 20 -- Width of the file column
-local fnW = 28 -- Width of the function name column
-local lW = 7 -- Width of the line column
-local tW = 7 -- Width of the time taken column
-local rW = 6 -- Width of the relative percentage column
-local cW = 5 -- Width of the call count column
-local str = "s: %-"
-local reportSaved = "> Report saved to: "
-local outputHeader = "| %-"..fW..str..fnW..str..lW..str..tW..str..rW..str..cW.."s|\n"
-local formatHeader = string.format(outputHeader, "FILE", "FUNCTION", "LINE", "TIME", "%", "#")
-local outputTitle = "%-"..fW.."."..fW..str..fnW.."."..fnW..str..lW.."s"
-local formatOutput = "| %s: %-"..tW..str..rW..str..cW.."s|\n"
-local formatTotalTime = "Total time: %f s\n"
-local formatFunLine = "%"..(lW - 2).."i"
-local formatFunTime = "%04.4f"
-local formatFunRelative = "%03.1f"
-local formatFunCount = "%"..(cW - 1).."i"
+local config = {
+  outputFile = "profiler.lua", -- Name of this profiler (to remove itself from reports)
+  emptyToThis = "~", -- Rows with no time are set to this value
+  fW = 20, -- Width of the file column
+  fnW = 28, -- Width of the function name column
+  lW = 7, -- Width of the line column
+  tW = 7, -- Width of the time taken column
+  rW = 6, -- Width of the relative percentage column
+  cW = 5, -- Width of the call count column
+  reportSaved = "> Report saved to: ", -- Text for the file output confirmation
+}
 
 --[[ Locals ]]--
 
@@ -106,6 +103,54 @@ local startTime = 0
 local stopTime = 0
 local printFun = nil
 local verbosePrint = false
+
+local outputHeader, formatHeader, outputTitle, formatOutput, formatTotalTime
+local formatFunLine, formatFunTime, formatFunRelative, formatFunCount, divider, nilTime
+
+local function deepCopy(input)
+  if type(input) == "table" then
+    local output = {}
+    for i, o in next, input, nil do
+      output[deepCopy(i)] = deepCopy(o)
+    end
+    do return output end
+  else
+    do return input end
+  end
+end
+
+local function charRepetition(n, character)
+  local s = ""
+  character = character or " "
+  for _ = 1, n do
+    s = s..character
+  end
+  return s
+end
+
+local function singleSearchReturn(inputString, search)
+  for _ in string.gmatch(inputString, search) do -- luacheck: ignore
+    do return true end
+  end
+  return false
+end
+
+local function rebuildColumnPatterns()
+  local c = config
+  local str = "s: %-"
+  outputHeader = "| %-"..c.fW..str..c.fnW..str..c.lW..str..c.tW..str..c.rW..str..c.cW.."s|\n"
+  formatHeader = string.format(outputHeader, "FILE", "FUNCTION", "LINE", "TIME", "%", "#")
+  outputTitle = "%-"..c.fW.."."..c.fW..str..c.fnW.."."..c.fnW..str..c.lW.."s"
+  formatOutput = "| %s: %-"..c.tW..str..c.rW..str..c.cW.."s|\n"
+  formatTotalTime = "Total time: %f s\n"
+  formatFunLine = "%"..(c.lW - 2).."i"
+  formatFunTime = "%04.4f"
+  formatFunRelative = "%03.1f"
+  formatFunCount = "%"..(c.cW - 1).."i"
+  divider = charRepetition(#formatHeader - 1, "-").."\n"
+  -- nilTime = "0."..charRepetition(c.tW - 3, "0")
+  nilTime = "0.0000"
+end
 
 local function functionReport(information)
   local src = information.short_src
@@ -150,24 +195,6 @@ local onDebugHook = function(hookType)
   end
 end
 
-local function charRepetition(n, character)
-  local s = ""
-  character = character or " "
-  for _ = 1, n do
-    s = s..character
-  end
-  return s
-end
-
-local function singleSearchReturn(inputString, search)
-  for _ in string.gmatch(inputString, search) do -- luacheck: ignore
-    do return true end
-  end
-  return false
-end
-
-local divider = charRepetition(#formatHeader - 1, "-").."\n"
-
 --[[ Functions ]]--
 
 --[[Attach a print function to the profiler, to receive a single string parameter
@@ -182,6 +209,9 @@ end
 --[[Start the profiling
 ]]
 function module.start()
+  if not outputHeader then
+    rebuildColumnPatterns()
+  end
   reportCache = {}
   allReports = {}
   reportCount = 0
@@ -221,8 +251,8 @@ function module.report(filename)
     local funcReport = allReports[i]
     if funcReport.count > 0 and funcReport.timer <= totalTime then
       local printThis = true
-      if outputFile ~= "" then
-        if singleSearchReturn(funcReport.title, outputFile) then
+      if config.outputFile ~= "" then
+        if singleSearchReturn(funcReport.title, config.outputFile) then
           printThis = false
         end
       end
@@ -240,8 +270,8 @@ function module.report(filename)
           divide = true
         end
         if timer == nilTime then
-          timer = emptyToThis
-          relTime = emptyToThis
+          timer = config.emptyToThis
+          relTime = config.emptyToThis
         end
         -- Build final line
         local output = string.format(formatOutput, funcReport.title, timer, relTime, count)
@@ -256,8 +286,24 @@ function module.report(filename)
   fileWriter:write(divider)
   fileWriter:close()
   if printFun ~= nil then
-    printFun(reportSaved.."'"..filename.."'")
+    printFun(config.reportSaved.."'"..filename.."'")
   end
+end
+
+--[[Modify the configuration of this module programmatically;
+Provide a table with keys that share the same name as the configuration parameters.
+@param overrides (table) <required> [Each key is from a valid name, the value is the override]
+]]
+function module.configuration(overrides)
+  local safe = deepCopy(overrides)
+  for k, v in pairs(safe) do
+    if not config[k] then
+      print("error: override field '"..k.."' not found (configuration)")
+    else
+      config[k] = v
+    end
+  end
+  rebuildColumnPatterns()
 end
 
 --[[ End ]]--
