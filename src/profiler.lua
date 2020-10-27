@@ -113,9 +113,9 @@ local function deepCopy(input)
     for i, o in next, input, nil do
       output[deepCopy(i)] = deepCopy(o)
     end
-    do return output end
+    return output
   else
-    do return input end
+    return input
   end
 end
 
@@ -298,7 +298,7 @@ Provide a table with keys that share the same name as the configuration paramete
 function module.configuration(overrides)
   local safe = deepCopy(overrides)
   for k, v in pairs(safe) do
-    if not config[k] then
+    if config[k] == nil then
       print("error: override field '"..k.."' not found (configuration)")
     else
       config[k] = v
