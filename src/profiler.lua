@@ -130,7 +130,7 @@ end
 
 local function singleSearchReturn(inputString, search)
   for _ in string.gmatch(inputString, search) do -- luacheck: ignore
-    do return true end
+    return true
   end
   return false
 end
