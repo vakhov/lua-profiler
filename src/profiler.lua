@@ -23,7 +23,7 @@ location of the profiler source file (if not in the 'main' root source directory
 @copyright (c) 2018-2020 Charles Mallah
 @license MIT license
 
-@sample Output will be generated like this, all output here is ordered by time:
+@sample Output will be generated like this, all output here is ordered by time (seconds):
 `> TOTAL TIME   = 0.030000 s
 `--------------------------------------------------------------------------------------
 `| FILE                : FUNCTION                    : LINE   : TIME   : %     : #    |
