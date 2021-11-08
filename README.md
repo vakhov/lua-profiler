@@ -36,7 +36,7 @@ Charles Mallah
 MIT license
 
 **Sample**:
-Output will be generated like this, all output here is ordered by time:
+Output will be generated like this, all output here is ordered by time (seconds):
 
     > TOTAL TIME   = 0.030000 s
     --------------------------------------------------------------------------------------
